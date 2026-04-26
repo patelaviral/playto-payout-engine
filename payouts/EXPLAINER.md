@@ -170,3 +170,24 @@ Another issue was around idempotency:
 I fixed this by introducing an `is_processing` flag and locking the idempotency row.
 
 These changes ensured the system behaves correctly under concurrency and retry scenarios.
+
+---
+
+# Additional Notes for Testing
+## Merchant Handling
+
+For simplicity, the current implementation assumes a single default merchant. The payout API internally uses the first available merchant in the database.
+
+In a production system, this would typically be handled via authentication or by passing a merchant_id in the request.
+
+---
+## Insufficient Balance Scenario
+
+If a payout request returns an "Insufficient balance" error, it means the available balance for the merchant is not enough to process the requested amount.
+
+Since this system uses a ledger-based balance (credits - debits - holds), the balance may get reduced after a few payout requests.
+
+To test successfully:
+
+Try using a smaller amount (e.g., 1000 paise)
+Or ensure the merchant has sufficient credited funds before making large payout requests
