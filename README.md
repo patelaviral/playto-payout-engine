@@ -42,9 +42,12 @@ This system simulates how international payments are collected and paid out to I
 
 ## 🛠 Tech Stack
 
-* Backend: Django + Django REST Framework
-* Database: PostgreSQL
-* Background jobs: Python worker (simulated)
+- Python
+- Django
+- Django REST Framework
+- PostgreSQL
+- Gunicorn
+- Render (Deployment)
 
 ---
 
@@ -142,6 +145,15 @@ Body:
 ```
 
 ---
+
+## ⚠️ Testing Notes
+
+- The system currently uses a single default merchant.
+- If you encounter "Insufficient balance", try using a smaller amount (e.g., 1000 paise).
+- Balance decreases after each payout since it is ledger-based.
+- In a production system, merchant identification would be handled via authentication or merchant_id.
+
+
 
 ## 🧪 Running Tests
 
