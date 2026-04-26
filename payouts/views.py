@@ -113,11 +113,13 @@ class PayoutRequestView(APIView):
                     payout=payout
                 )
 
-                response_data = {
-                    "message": "Payout created",
-                    "payout_id": payout.id,
-                    "amount": amount
-                }
+                from collections import OrderedDict
+
+                response_data = OrderedDict([
+                    ("message", "Payout created"),
+                    ("payout_id", payout.id),
+                    ("amount", amount),
+                ])
 
                 idempotency_obj.response_data = response_data
                 idempotency_obj.is_processing = False
