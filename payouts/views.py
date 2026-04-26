@@ -74,9 +74,19 @@ class PayoutRequestView(APIView):
                     key=idempotency_key
                 )
 
+                from collections import OrderedDict
+
                 if not created:
                     if not idempotency_obj.is_processing:
-                        return Response(idempotency_obj.response_data, status=200)
+                        data = idempotency_obj.response_data
+
+                        ordered_data = OrderedDict([
+                            ("message", data.get("message")),
+                            ("payout_id", data.get("payout_id")),
+                            ("amount", data.get("amount")),
+                        ])
+
+                        return Response(ordered_data, status=200)
                     else:
                         return Response(
                             {"message": "Request is still processing"},
